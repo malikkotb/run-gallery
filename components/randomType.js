@@ -1,4 +1,4 @@
-function randomType(element, characters, duration, sequential = false) {
+export default function randomType(element, characters, duration, sequential = false) {
   let originalText = element.innerText;
   let textArray = originalText.split("");
   let charactersArray = characters.split("");
@@ -45,8 +45,5 @@ function randomType(element, characters, duration, sequential = false) {
     The second parameter is a string of characters that you want to be used in the random typing.
     The third parameter is the duration of the typing in milliseconds.
     The fourth parameter is a boolean that determines whether the typing is sequential or not.
-
-    If you still don't understand how to use this, don't sweat it. I will show you
-    in the next solution video module.
 
 */
