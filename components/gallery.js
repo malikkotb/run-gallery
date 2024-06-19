@@ -25,8 +25,14 @@ export default function Gallery() {
   const addToNumberRefs = addToRefs(numberRefs);
   const addToTitleRefs = addToRefs(titleRefs);
 
-  const handleHover = (scale) => {
-    gsap.to(imageRefs.current, { scale, duration: 0.3, ease: "power2.inOut" });
+  // animate single element in array of elements
+  const handleHover = (state, index) => {
+    randomType(titleRefs.current[index], "01", 300, false);
+    gsap.to(imageRefs.current[index], {
+      clipPath:
+        state === 0 ? "polygon(0% 10%, 100% 0%, 100% 90%, 0% 100%)" : "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+      //   ease: "power2.inOut",
+    });
   };
 
   useGSAP(() => {
@@ -44,9 +50,6 @@ export default function Gallery() {
     tl.to(
       imageRefs.current,
       {
-        // opacity: 0,
-        // y: -50,
-        // clipPath: "inset(0 100% 0 0)",
         clipPath: "polygon(0% 100%, 100% 54%, 100% 100%, 0% 100%)",
         stagger: 0.1,
       },
@@ -95,8 +98,8 @@ export default function Gallery() {
           <div key={index}>
             <div
               ref={addToImageRefs}
-              onMouseEnter={() => handleHover(1.2)}
-              onMouseLeave={() => handleHover(1)}
+              onMouseEnter={() => handleHover(0, index)}
+              onMouseLeave={() => handleHover(1, index)}
               className="w-[20vw] h-[40vh] relative"
             >
               <Image src={src} fill style={{ objectFit: "cover" }} alt="run" />

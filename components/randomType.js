@@ -1,3 +1,13 @@
+/*
+    Usage:
+    randomType(domElement, '01', 500, true);
+
+    The first parameter is just a domElement that has type inside of it. 
+    The second parameter is a string of characters that you want to be used in the random typing.
+    The third parameter is the duration of the typing in milliseconds.
+    The fourth parameter is a boolean that determines whether the typing is sequential or not.
+
+*/
 export default function randomType(element, characters, duration, sequential = false) {
   let originalText = element.innerText;
   let textArray = originalText.split("");
@@ -33,17 +43,4 @@ export default function randomType(element, characters, duration, sequential = f
   }
 }
 
-/*
 
-    Usage:
-
-    Paste this function into your project and call it like this:
-
-    randomType(domElement, '01', 500, true);
-
-    The first parameter is just a domElement that has type inside of it. 
-    The second parameter is a string of characters that you want to be used in the random typing.
-    The third parameter is the duration of the typing in milliseconds.
-    The fourth parameter is a boolean that determines whether the typing is sequential or not.
-
-*/
