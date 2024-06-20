@@ -25,14 +25,22 @@ export default function Gallery() {
   const addToNumberRefs = addToRefs(numberRefs);
   const addToTitleRefs = addToRefs(titleRefs);
 
-  // animate single element in array of elements
-  const handleHover = (state, index) => {
-    randomType(titleRefs.current[index], "01", 300, false);
-    gsap.to(imageRefs.current[index], {
-      clipPath:
-        state === 0 ? "polygon(0% 10%, 100% 0%, 100% 90%, 0% 100%)" : "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-      //   ease: "power2.inOut",
+  const handleHover = (index) => {
+    // Pre-apply a clipPath in the initial state
+    gsap.set(imageRefs.current, {
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
     });
+    randomType(titleRefs.current[index], "01", 500, true);
+    gsap.to(imageRefs.current[index], {
+      clipPath: "polygon(0% 10%, 100% 0%, 100% 90%, 0% 100%)",
+    });
+  };
+
+  const handleMouseLeave = (index) => {
+    gsap.to(imageRefs.current[index], {
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+    });
+    titleRefs.current[index].textContent = "RUNATTIRE";
   };
 
   useGSAP(() => {
@@ -42,23 +50,32 @@ export default function Gallery() {
       scrollTrigger: {
         trigger: mainRef.current,
         start: "top 20%",
-        end: "bottom 50%",
-        toggleActions: "play none none none",
+        end: "bottom top",
+        toggleActions: "play none none reverse",
       },
+      defaults: { ease: "power4.inOut" },
     });
 
-    tl.to(
-      imageRefs.current,
-      {
-        clipPath: "polygon(0% 100%, 100% 54%, 100% 100%, 0% 100%)",
-        stagger: 0.1,
-      },
-      ""
-    )
-      .to(imageRefs.current, {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-        stagger: 0.1,
-      })
+    gsap.set(imageRefs.current, { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" });
+
+    tl.from(imageRefs.current, {
+      y: -100,
+      stagger: 0.1,
+    })
+      .to(
+        imageRefs.current,
+        {
+          clipPath: "polygon(0% 100%, 100% 100%, 100% 54%, 0% 100%)",
+        },
+        "<"
+      )
+      .to(
+        imageRefs.current,
+        {
+          clipPath: "polygon(0 100%, 100% 100%, 100% 0%, 0% 0%)",
+        },
+        "-=0.5"
+      )
       .from(
         dividerRefs.current,
         {
@@ -98,11 +115,17 @@ export default function Gallery() {
           <div key={index}>
             <div
               ref={addToImageRefs}
-              onMouseEnter={() => handleHover(0, index)}
-              onMouseLeave={() => handleHover(1, index)}
+              onMouseEnter={() => handleHover(index)}
+              onMouseLeave={() => handleMouseLeave(index)}
               className="w-[20vw] h-[40vh] relative"
             >
-              <Image src={src} fill style={{ objectFit: "cover" }} alt="run" />
+              <Image
+                src={src}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                fill
+                style={{ objectFit: "cover" }}
+                alt="run"
+              />
             </div>
             <div ref={addToDividerRefs} className="border-b border-black mb-0 mt-2"></div>
             <div className="flex mask justify-between items-center">
